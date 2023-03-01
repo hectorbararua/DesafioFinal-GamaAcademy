@@ -62,4 +62,24 @@ module.exports = class CardController {
       res.status(500).json({ message: error.message })
     }
   }
+
+  static async delete(req, res) {
+    try {
+      const { id } = req.params
+
+      const v = await Orders.findById(id)
+
+      Promise.all(
+        v.OrdersProductId.map(async ordersProductId => {
+          await OrdersProduct.findByIdAndDelete(ordersProductId.toString())
+        })
+      )
+
+      await Orders.findByIdAndDelete(id)
+
+      res.status(204).json()
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
+  }
 }
