@@ -9,7 +9,7 @@ const createUserToken = async (user, res) => {
       email: user.email,
       role: user.role
     },
-    secret
+    secret.key
   )
 
   res.status(200).json({
